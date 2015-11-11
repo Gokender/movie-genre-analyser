@@ -5,8 +5,9 @@ import urllib.request
 
 regex_1 = re.compile('(".*?")')
 regex_2 = re.compile('(/\d+")')
-pages = 1 #number of pages to crawl by genre
-movie_genre = ['drama','action','comedy','sci-fi','crime','thriller','romance','horror','war','fantasy','western']
+pages = 10 #number of pages to crawl by genre
+#movie_genre = ['drama','action','comedy','sci-fi','crime','thriller','romance','horror','war','fantasy','western']
+movie_genre = ['sci-fi']
 
 domain = 'https://mvsubtitles.com'
 
