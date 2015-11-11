@@ -5,8 +5,7 @@ import urllib.request
 
 regex_1 = re.compile('(".*?")')
 regex_2 = re.compile('(/\d+")')
-list_url = []
-pages = 2 #number of pages to crawl by genre
+pages = 1 #number of pages to crawl by genre
 movie_genre = ['drama','action','comedy','sci-fi','crime','thriller','romance','horror','war','fantasy','western']
 
 domain = 'https://mvsubtitles.com'
@@ -53,28 +52,30 @@ def findUrlMovie(genre,pages):
     return list_url
 
 ##Find ID movie and download subtitle zipfile
-genre = movie_genre[10]
-print('We\'re looking for the genre : ' + genre)
-list_u = findUrlMovie(genre,pages)
-print('We have ' + str(len(list_u)) + ' subtitles to download')
+for genre in movie_genre:
+    #genre = movie_genre[0]
+    list_url = []
+    print('We\'re looking for the genre : ' + genre)
+    list_u = findUrlMovie(genre,pages)
+    print('We have ' + str(len(list_u)) + ' subtitles to download')
 
-for i in list_url:
+    for i in list_url:
 
-    movie_name = i.lstrip().rstrip()
-    #print(movie_name)
-    web = domain + movie_name + '/english-subtitles'
+        movie_name = i.lstrip().rstrip()
+        #print(movie_name)
+        web = domain + movie_name + '/english-subtitles'
 
-    try:
-        id_movie = getIdDownload(web)
-        url_download = domain + '/download' + movie_name + '/english/' + str(id_movie) #+ '.zip'
-        print('Downloading : ' + url_download)
+        try:
+            id_movie = getIdDownload(web)
+            url_download = domain + '/download' + movie_name + '/english/' + str(id_movie) #+ '.zip'
+            print('Downloading : ' + url_download)
 
-        response = requests.get(url_download)
-        filepath = 'C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\subtitles\\' + genre + '\\' + movie_name + '.zip'
+            response = requests.get(url_download)
+            filepath = 'C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\subtitles\\' + genre + '\\' + movie_name + '.zip'
 
-        urllib.request.urlretrieve(url_download,filepath)
+            urllib.request.urlretrieve(url_download,filepath)
 
-    except Exception as e:
-        print(e)
+        except Exception as e:
+            print(e)
 
-#https://mvsubtitles.com/the-dark-valley
+    print('---------------------------------------')
