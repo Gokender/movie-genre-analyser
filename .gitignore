@@ -58,3 +58,6 @@ target/
 
 # Directory
 subtitles/
+
+# API Key
+import.key

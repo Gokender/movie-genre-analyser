@@ -8,9 +8,9 @@ import glob
 
 regex = re.compile('[^\W\d]+')
 western_dict = defaultdict(int)
-movie_genre = ['drama','action','comedy','sci-fi','crime','thriller','romance','horror','war','fantasy','western']
-genre = movie_genre[0]
-utf8 = True
+movie_genre = ['drama','action','comedy','sci-fi','crime','thriller','romance','horror','war','fantasy','western','adventure']
+genre = movie_genre[11]
+utf8 = 1
 
 def countWords(filename):
 
@@ -32,16 +32,20 @@ def countWords(filename):
         for sub in subs:
             m = re.findall(regex,str(sub.content))
             for i in m:
-                western_dict[i.lower()] += 1
+                try:
+                    western_dict[i.lower()] += 1
+                except Exception as e:
+                    continue
 
         f.close()
     except Exception as e:
         print(e)
 
-if(utf8 == True):
+
+if(utf8 == 1):
     list_files = glob.glob('C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\subtitles\\' + genre + '\\utf8\\*.srt')
 else:
-    list_files = glob.glob('C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\subtitles\\' + genre + '\\*.srt')
+    list_files = glob.glob('C:\\Users\\Gauthier\\Desktop\\TempSub\\comedy\\utf8\\*.srt')
 
 for filename in list_files:
         print(filename)
@@ -50,15 +54,21 @@ for filename in list_files:
 temp = sorted(western_dict.items(), key=itemgetter(1),reverse=True)
 
 file_result = codecs.open('C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\results\\' + genre + '.txt','w',encoding='utf8',errors='ignore')
+file_result_reduced = codecs.open('C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\results\\' + genre + '_reduced.txt','w',encoding='utf8',errors='ignore')
+count = 0
 
 for result in temp:
+    count = count + 1
     file_result.write(result[0] + ';' + str(result[1]) + '\n')
+    if(count <= 1000):
+        file_result_reduced.write(result[0] + ';' + str(result[1]) + '\n')
 file_result.close()
+file_result_reduced.close()
 
 def compareUnique(compare_1,compare_2):
 
-    filename1 = 'C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\results\\' + compare_1 + '.txt'
-    filename2 = 'C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\results\\' + compare_2 + '.txt'
+    filename1 = 'C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\results\\' + compare_1 + '_reduced.txt'
+    filename2 = 'C:\\Users\\Gauthier\\Documents\\Projets\\movie-genre-analyser\\results\\' + compare_2 + '_reduced.txt'
 
     list_1 = []
     list_2 = []
@@ -97,7 +107,7 @@ def compareUnique(compare_1,compare_2):
                  list_result_1.append(it)
         except UnicodeDecodeError:
             count = 1
-            pass
+            continue
 
     for it in list_2:
         #print(it)
@@ -106,7 +116,7 @@ def compareUnique(compare_1,compare_2):
                 list_result_2.append(it)
         except UnicodeDecodeError:
             count = 1
-            pass
+            continue
 
     print(list_result_1)
     print('/n')
@@ -127,4 +137,4 @@ def compareUnique(compare_1,compare_2):
 compare_1 = movie_genre[0]
 compare_2 = movie_genre[1]
 
-compareUnique(compare_1,compare_2)
+#compareUnique(compare_1,compare_2)

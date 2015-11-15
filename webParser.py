@@ -5,9 +5,10 @@ import urllib.request
 
 regex_1 = re.compile('(".*?")')
 regex_2 = re.compile('(/\d+")')
-pages = 10 #number of pages to crawl by genre
+pages = 30 #number of pages to crawl by genre
+start_page = 0
 #movie_genre = ['drama','action','comedy','sci-fi','crime','thriller','romance','horror','war','fantasy','western']
-movie_genre = ['sci-fi']
+movie_genre = ['thriller']
 
 domain = 'https://mvsubtitles.com'
 
@@ -31,7 +32,7 @@ def getIdDownload(url):
 
 def findUrlMovie(genre,pages):
 
-    for page in range(0,pages):
+    for page in range(start_page,pages):
 
         url = 'https://mvsubtitles.com/Gender/' + genre + '-subtitles?p=' + str(page+1)
         print(url)
